@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 data = np.loadtxt(file("keywords.csv"), delimiter=",",dtype=str)
 field = 13
@@ -82,3 +83,42 @@ for k in keywords:
     for discipline in keywords[k]:
         wf.write("%s,%s,%s\n" % (k,discipline,keywords[k][discipline]))
 wf.close()
+
+domains = domain_to_keyword.keys()
+domains.remove('')
+n = 25
+wf = file('word-matrix.csv','w')
+# header
+wf.write((",".join(['word'] + domains))+"\n")
+mkeywords = list()
+mrows = list()
+mnrows = list()
+for i in range(1,len(keyword_counts_t)):
+    (keyword,count) = keyword_counts_t[-i]
+    counts = np.array([keywords[keyword].get(domain,0) for domain in domains])
+    ncounts = counts / float(count)
+    mrows.append(counts)
+    mnrows.append(ncounts)
+    mkeywords.append(keyword)
+    wf.write((",".join([keyword] + [str(x) for x in counts]))+"\n")
+wf.close()
+keymatrix = np.array(mrows)
+nkeymatrix = np.array(mnrows)
+#plt.imshow(nkeymatrix[0:20], interpolation='none')
+# plt.yticks(mkeywords[0:20])
+fig, ax = plt.subplots()
+n = 100
+data = nkeymatrix[0:n]
+labels = mkeywords[0:n]
+ax.set_yticks(np.arange(data.shape[0])+0.5, minor=False)
+ax.set_xticks(np.arange(data.shape[1])+0.5, minor=False)
+#ax.imshow(data, interpolation='none')
+heatmap = ax.pcolor(data, cmap=plt.cm.Blues)
+ax.set_yticklabels(labels)
+ax.set_xticklabels(domains)
+ax.xaxis.tick_top()
+ax.invert_yaxis()
+#ax.set_xticklabels(x_labels)
+plt.savefig('word-matrix.png')
+plt.savefig('word-matrix.pdf')
+plt.show()
