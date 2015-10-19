@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.colors import LogNorm
 
 """ Make a heatmap normalized and unnormalized from lixin's data"""
 
@@ -28,7 +29,7 @@ def plotit(prefix, rownames, colnames, rows):
     ax.xaxis.tick_top()
     ax.set_xticks(np.arange(data.shape[1])+0.5, minor=False)
     #ax.imshow(data, interpolation='none')
-    heatmap = ax.pcolor(data, cmap=plt.cm.Blues)
+    heatmap = ax.pcolor(data, cmap='PuBu_r') # cmap=plt.cm.Blues,
     ax.set_yticklabels(rownames.tolist())
     ax.set_xticklabels(colnames.tolist(), rotation=40, ha='left')
     ax.invert_yaxis()
