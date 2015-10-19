@@ -18,6 +18,10 @@ colsum = 1.0/np.sum(rows,axis=0)
 colsum = colsum.reshape((1,colsum.shape[0]))
 norm_col_rows = np.nan_to_num(colsum * rows)
 
+crowsum = 1.0/np.sum(colsum,axis=1)
+crowsum = crowsum.reshape((crowsum.shape[0],1))
+cnorm_rows = np.nan_to_num(crowsum * rows)
+
 
 def plotit(prefix, rownames, colnames, rows):
     fig, ax = plt.subplots()
@@ -42,3 +46,4 @@ def plotit(prefix, rownames, colnames, rows):
 plotit("bigger",rownames, colnames, rows)
 plotit("bigger-norm",rownames, colnames, norm_rows)
 plotit("bigger-norm-col",rownames, colnames, norm_col_rows)
+plotit("bigger-norm-all",rownames, colnames, cnorm_rows)
