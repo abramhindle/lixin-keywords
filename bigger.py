@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+""" Make a heatmap normalized and unnormalized from lixin's data"""
+
 data = np.loadtxt(file("bigger.csv"), delimiter=",",dtype=str)
 rownames = data[1:,0]
 colnames = data[0,1:]
@@ -10,6 +12,10 @@ rows = data[1:,1:].astype(int)
 rowsum = 1.0/np.sum(rows,axis=1)
 rowsum = rowsum.reshape((rowsum.shape[0],1))
 norm_rows = np.nan_to_num(rowsum * rows)
+
+colsum = 1.0/np.sum(rows,axis=0)
+colsum = colsum.reshape((1,colsum.shape[0]))
+norm_col_rows = np.nan_to_num(colsum * rows)
 
 
 def plotit(prefix, rownames, colnames, rows):
@@ -34,3 +40,4 @@ def plotit(prefix, rownames, colnames, rows):
 
 plotit("bigger",rownames, colnames, rows)
 plotit("bigger-norm",rownames, colnames, norm_rows)
+plotit("bigger-norm-col",rownames, colnames, norm_col_rows)
